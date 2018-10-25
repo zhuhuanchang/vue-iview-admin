@@ -2,7 +2,7 @@
 import axios from '@/libs/api.request'
 export default {
   commonPage: {
-    data () {
+    data() {
       return {
         currentPage: 1, //当前页
         pageSize: 10, //一页显示个数
@@ -75,51 +75,51 @@ export default {
         searchLoading: false, //搜索loading
         searchDaterangeOptions: { //时间段拓展对象
           shortcuts: [{
-            text: '一星期前',
-            value () {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              return [start, end];
+              text: '一星期前',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                return [start, end];
+              }
+            },
+            {
+              text: '一个月前',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                return [start, end];
+              }
+            },
+            {
+              text: '三个月前',
+              value() {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                return [start, end];
+              }
             }
-          },
-          {
-            text: '一个月前',
-            value () {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              return [start, end];
-            }
-          },
-          {
-            text: '三个月前',
-            value () {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              return [start, end];
-            }
-          }
           ]
         }
       }
     },
     computed: {
       //合并table配置
-      tableFieldsRender () {
+      tableFieldsRender() {
         var arr = this.tableFields
         arr.push(this.tableFieldsAction)
         return arr
       },
       //删除后当前页切换，判断当前页面是否有数据，没有就跳上一页，第一页不跳。 返回布尔值
-      currentPageState () {
+      currentPageState() {
         return this.count / this.pageSize < this.currentPage && this.currentPage != 1
       }
     },
     watch: {
       //监听日期选择器的变化
-      'searchDaterange' (dateRange) {
+      'searchDaterange'(dateRange) {
         // if (dateRange > 0) {
         // 	this.searchFields['startTime'] = Moment(dateRange[0]).format("YYYY-MM-DD")
         // 	this.searchFields['endTime'] = Moment(dateRange[1]).format("YYYY-MM-DD")
@@ -127,13 +127,13 @@ export default {
 
       }
     },
-    mounted () {
+    mounted() {
 
 
     },
     methods: {
       //批量删除表格数据
-      async deleteAllListData () {
+      async deleteAllListData() {
         if (this.tableSelection.length > 0) {
           this.tableLoading = true;
           for (let i = 0; i < this.tableSelection.length; i++) {
@@ -141,7 +141,7 @@ export default {
               data: {
 
               },
-              success: (res) => { },
+              success: (res) => {},
               error: (res) => {
                 this.tableLoading = false;
               }
@@ -159,7 +159,7 @@ export default {
       },
 
       //提交数据（新增/修改数据触发按钮）
-      submitData () {
+      submitData() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
             this.formSubmitLoading = true;
@@ -167,12 +167,12 @@ export default {
           } else {
             //处理点击确定按钮时验证不通过 loading一直显示的问题
             this.modalButtonShowLoadingReset();
-            this.$Message.error('验证失败！');
+            // this.$Message.error('验证失败！');
           }
         })
       },
       //新增数据
-      createData () {
+      createData() {
         axios.request({
           url: this.url,
           method: 'post',
@@ -187,7 +187,7 @@ export default {
         })
       },
       //删除数据
-      deleteData (id) {
+      deleteData(id) {
         this.tableLoading = true;
         axios.request({
           url: `${this.url}/${id}`,
@@ -204,7 +204,7 @@ export default {
         })
       },
       //修改数据
-      updateData () {
+      updateData() {
         axios.request({
           url: `${this.url}/${this.formModel.id}`,
           method: 'put',
@@ -219,7 +219,7 @@ export default {
         })
       },
       //获取列表数据
-      getData () {
+      getData() {
         this.tableLoading = true
         axios.request({
           url: this.url,
@@ -240,7 +240,7 @@ export default {
         })
       },
       //获取表单数据
-      getFormData (id) {
+      getFormData(id) {
         this.formLoading = true;
         axios.request({
           url: `${this.url}/${id}`,
@@ -257,39 +257,39 @@ export default {
         })
       },
       //在获取表单数据之后执行
-      getFormDataAfter () { },
+      getFormDataAfter() {},
 
 
       //重置弹窗底部按钮loading(处理点击确定按钮时验证不通过 loading一直显示的问题)
-      modalButtonShowLoadingReset () {
+      modalButtonShowLoadingReset() {
         this.modalButtonShowLoading = false;
         this.$nextTick(() => {
           this.modalButtonShowLoading = true;
         })
       },
       //表格多选发生变化时就会触发
-      tableSelectionChange (selection) {
+      tableSelectionChange(selection) {
         this.tableSelection = selection;
       },
       //切换页数
-      pageChange (currentPage) {
+      pageChange(currentPage) {
         this.currentPage = currentPage;
         this.getData();
       },
       //切换页数显示个数
-      pageChangeSize (pageSize) {
+      pageChangeSize(pageSize) {
         this.pageSize = pageSize;
         this.getData();
       },
       //打开表单弹窗,id是这条数据的id
-      formOpenModal (id) {
+      formOpenModal(id) {
         this.formShow = true;
         if (id) {
           this.getFormData(id);
         }
       },
       //关闭表单弹窗
-      formCloseModal () {
+      formCloseModal() {
         this.$refs['form'].resetFields();
         if (this.formModel.id) {
           delete this.formModel.id
@@ -299,16 +299,36 @@ export default {
         this.$refs["commonUpload"] && this.$refs["commonUpload"].clearFiles();
       },
       //日期空间变化时触发
-      datePickerChange (dateRange) {
+      datePickerChange(dateRange) {
         this.searchFields["startTime"] = dateRange[0];
         this.searchFields["endTime"] = dateRange[1];
         this.getData();
       },
       //搜索数据
-      searchData () {
+      searchData() {
         this.currentPage = 1;
         this.searchLoading = true;
         this.getData();
+      },
+      //arr转tree数据格式
+      //newTree 是新的数组，data是获取到的原数据，parentId默认是''
+      arrToTree(newTree, data, parentId) {
+        if (newTree.length != 0) {
+          newTree = [];
+        }
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentId === parentId) {
+            data[i].children = [];
+            data[i].title = data[i].name;
+            data[i].label = data[i].name;
+            data[i].expand = false;
+            var json = Object.assign({}, data[i]);
+            newTree.push(json);
+            data.splice(i, 1);
+            i--;
+            this.arrToTree(json.children, data, json.id);
+          }
+        }
       },
 
       //图片字段base64的处理

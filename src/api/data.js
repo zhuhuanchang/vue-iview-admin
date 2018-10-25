@@ -21,3 +21,19 @@ export const getRoleList = (payload) => {
     params: payload,
   })
 }
+//获取产品分类
+export const getProductClassification = (payload) => {
+  return axios.request({
+    url: '/productClassification',
+    method: 'get',
+    params: payload,
+  })
+}
+//获取数据字典
+export const getDictionary = (payload) => {
+  return axios.request({
+    url: '/dictionaryItem',
+    method: 'get',
+    params: payload,
+  })
+}

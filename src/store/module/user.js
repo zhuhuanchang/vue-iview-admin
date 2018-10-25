@@ -1,5 +1,12 @@
-import { login, logout, getUserInfo } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import {
+  login,
+  logout,
+  getUserInfo
+} from '@/api/user'
+import {
+  setToken,
+  getToken
+} from '@/libs/util'
 
 export default {
   state: {
@@ -11,30 +18,32 @@ export default {
     access: ''
   },
   mutations: {
-    setAvator (state, avatorPath) {
+    setAvator(state, avatorPath) {
       state.avatorImgPath = avatorPath
     },
-    setUserId (state, id) {
+    setUserId(state, id) {
       state.userId = id
     },
-    setUserName (state, name) {
+    setUserName(state, name) {
       state.userName = name
     },
-    setRealName (state, name) {
+    setRealName(state, name) {
       state.realName = name
     },
 
-    setAccess (state, access) {
+    setAccess(state, access) {
       state.access = access
     },
-    setToken (state, token) {
+    setToken(state, token) {
       state.token = token
       setToken(token)
     }
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, formModel) {
+    handleLogin({
+      commit
+    }, formModel) {
       formModel.userName = formModel.userName.trim()
       return new Promise((resolve, reject) => {
         login(formModel).then(res => {
@@ -46,7 +55,10 @@ export default {
       })
     },
     // 退出登录
-    handleLogOut ({ state, commit }) {
+    handleLogOut({
+      state,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('setToken', '')
@@ -62,7 +74,10 @@ export default {
       })
     },
     // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
+    getUserInfo({
+      state,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(res => {
           commit('setAvator', res.data.avatar)
