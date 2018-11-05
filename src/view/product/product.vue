@@ -111,6 +111,7 @@
 <script>
 import mixins from "@/libs/mixins.js";
 import { getProductClassification } from "@/api/data";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: 'product',
   mixins: [mixins.commonPage],
@@ -119,7 +120,6 @@ export default {
     return {
       uploadUrl: "/upload",
       url: "/product",
-      stateList: [],
       productClassificationList: [],
       tableFields: [
         {
@@ -143,14 +143,18 @@ export default {
           align: "center"
         },
         {
-          title: "分类",
-          key: "productClassificationId",
-          align: "center"
-        },
-        {
           title: "状态",
           key: "state",
-          align: "center"
+          align: "center",
+          render: (h, params) => {
+            let label = this.dictionariesGetters.productState.label[params.row.state]
+            let color = params.row.state == '1' ? 'success' : 'error'
+            return h("Tag", {
+              props: {
+                color: color,
+              }
+            }, label);
+          }
         }
       ],
       searchFields: {
@@ -174,7 +178,12 @@ export default {
       this.searchData();
     },
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      stateList: state => state.app.dictionaries.productState,
+    }),
+    ...mapGetters(['dictionariesGetters'])
+  },
   mounted () {
     this.getData();
     this.getProductClassification();

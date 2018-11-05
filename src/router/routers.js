@@ -106,6 +106,7 @@ export default [{
     meta: {
       icon: '_qq',
       title: '系统管理',
+      access: ['admin']
     },
     children: [{
       path: 'user_page',
