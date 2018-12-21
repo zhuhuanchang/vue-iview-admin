@@ -1,12 +1,51 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import { forEach, hasOneOf, objEqual } from '@/libs/tools'
+import {
+  forEach,
+  hasOneOf,
+  objEqual
+} from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 
+//arr转tree数据格式
+//newTree 是新的数组，data是获取到的原数据，parentId默认是''
+export const arrToTree = ({
+  newTree,
+  data,
+  parentId
+}) => {
+  if (newTree.length != 0) {
+    newTree = [];
+  }
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].parentId === parentId) {
+      data[i].children = [];
+      data[i].meta = {};
+      data[i].component = `@/view${data[i].component}.vue`
+      data[i].meta.title = data[i].title;
+      data[i].meta.icon = data[i].icon;
+      var json = Object.assign({}, data[i]);
+      newTree.push(json);
+      data.splice(i, 1);
+      i--;
+      arrToTree({
+        newTree: json.children,
+        data: data,
+        parentId: json.id
+      })
+    };
+  }
+}
+
+
+
+
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+  Cookies.set(TOKEN_KEY, token, {
+    expires: config.cookieExpires || 1
+  })
 }
 
 export const getToken = () => {
@@ -66,7 +105,9 @@ export const getBreadCrumbList = (routeMetched, homeRoute) => {
   res = res.filter(item => {
     return !item.meta.hideInMenu
   })
-  return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
+  return [Object.assign(homeRoute, {
+    to: homeRoute.path
+  }), ...res]
 }
 
 export const showTitle = (item, vm) => vm.$config.useI18n ? vm.$t(item.name) : ((item.meta && item.meta.title) || item.name)
@@ -111,10 +152,18 @@ export const getHomeRoute = routers => {
  * @description 如果该newRoute已经存在则不再添加
  */
 export const getNewTagList = (list, newRoute) => {
-  const { name, path, meta } = newRoute
+  const {
+    name,
+    path,
+    meta
+  } = newRoute
   let newList = [...list]
   if (newList.findIndex(item => item.name === name) >= 0) return newList
-  else newList.push({ name, path, meta })
+  else newList.push({
+    name,
+    path,
+    meta
+  })
   return newList
 }
 

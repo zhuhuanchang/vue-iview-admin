@@ -1,5 +1,8 @@
 import Main from '@/view/main'
 import parentView from '@/components/parent-view'
+import {
+  getRoleList
+} from "@/api/data";
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -56,6 +59,7 @@ export default [{
     name: 'customer',
     component: Main,
     meta: {
+      icon: '_qq',
       title: '客户管理',
     },
     children: [{
@@ -135,7 +139,18 @@ export default [{
       },
       component: () =>
         import('@/view/dictionary/dictionary.vue')
+    }, {
+      path: 'systemMenu_page',
+      name: 'systemMenu_page',
+      meta: {
+        icon: '_qq',
+        title: '菜单管理',
+      },
+      component: () =>
+        import('@/view/systemMenu/systemMenu.vue')
     }]
+
+
   },
   {
     path: '/userCenter',

@@ -312,7 +312,12 @@ export default {
       },
       //arr转tree数据格式
       //newTree 是新的数组，data是获取到的原数据，parentId默认是''
-      arrToTree(newTree, data, parentId) {
+      arrToTree({
+        newTree,
+        data,
+        parentId,
+        title
+      }) {
         if (newTree.length != 0) {
           newTree = [];
         }
@@ -326,7 +331,11 @@ export default {
             newTree.push(json);
             data.splice(i, 1);
             i--;
-            this.arrToTree(json.children, data, json.id);
+            this.arrToTree({
+              newTree: json.children,
+              data: data,
+              parentId: json.id
+            })
           }
         }
       },

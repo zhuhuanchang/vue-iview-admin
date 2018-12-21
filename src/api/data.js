@@ -29,6 +29,14 @@ export const getProductClassification = (payload) => {
     params: payload,
   })
 }
+//获取系统菜单
+export const getSystemMenu = (payload) => {
+  return axios.request({
+    url: '/systemMenu',
+    method: 'get',
+    params: payload,
+  })
+}
 //获取数据字典
 export const getDictionary = (payload) => {
   return axios.request({

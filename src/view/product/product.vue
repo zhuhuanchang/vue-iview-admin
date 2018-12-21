@@ -200,7 +200,11 @@ export default {
       this.tableLoading = true
       getProductClassification().then((res) => {
         this.tableLoading = false;
-        this.arrToTree(this.productClassificationList, res.data, '')
+        this.arrToTree({
+          newTree: this.productClassificationList,
+          data: res.data,
+          parentId: ''
+        })
         this.total = res.total;
       }).catch((res) => {
         this.tableLoading = false;

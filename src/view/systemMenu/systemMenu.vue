@@ -1,6 +1,6 @@
 
 <template>
-  <div class="productClassification">
+  <div class="systemMenu">
     <Card>
       <Row slot="title"
            class="common-table-title">
@@ -40,11 +40,32 @@
               :label-width="110"
               :model="formModel"
               :rules="formRule">
-          <FormItem label="产品分类名称："
+          <FormItem label="菜单路径："
+                    prop="path">
+            <Input v-model="formModel.path"
+                   placeholder="请输入菜单路径" />
+          </FormItem>
+          <FormItem label="菜单英文名称："
                     prop="name">
             <Input v-model="formModel.name"
-                   placeholder="请输入产品分类名称" />
+                   placeholder="请输入菜单英文名称" />
           </FormItem>
+          <FormItem label="图标："
+                    prop="icon">
+            <Input v-model="formModel.icon"
+                   placeholder="请选择菜单图标" />
+          </FormItem>
+          <FormItem label="菜单标题："
+                    prop="title">
+            <Input v-model="formModel.title"
+                   placeholder="请输入菜单标题：" />
+          </FormItem>
+          <FormItem label="菜单组件："
+                    prop="component">
+            <Input v-model="formModel.component"
+                   placeholder="请输入菜单组件" />
+          </FormItem>
+
           <FormItem style='display:none'
                     label="父级id："
                     prop="parentId">
@@ -60,26 +81,30 @@
 <script>
 import mixins from "@/libs/mixins.js";
 import axios from '@/libs/api.request'
-import { getProductClassification } from "@/api/data";
+import { getSystemMenu } from "@/api/data";
 export default {
   mixins: [mixins.commonPage],
   components: {},
   data () {
     return {
-      url: '/productClassification',
+      url: '/systemMenu',
       treeCurrentData: {}, //临时存放当前点击的树节点
       formModel: {
+        path: '',
         name: "",
+        icon: '',
+        title: '',
+        component: '',
         parentId: '',
       },
       formRule: {
-        name: [{ required: true, message: "产品分类名称不能为空", }],
-
+        name: [{ required: true, message: "菜单名称不能为空", }],
+        icon: [{ required: true, message: "图标不能为空", }],
       },
       //树配置
       treeData: [
         {
-          title: '产品分类树',
+          title: '系统菜单树',
           expand: true,
           render: (h, { root, node, data }) => {
             return h('span', {
@@ -245,7 +270,7 @@ export default {
     },
     getData () {
       this.tableLoading = true
-      getProductClassification().then((res) => {
+      getSystemMenu().then((res) => {
         this.tableLoading = false;
         this.arrToTree({
           newTree: this.treeData[0].children,
